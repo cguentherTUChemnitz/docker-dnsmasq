@@ -1,4 +1,10 @@
 FROM alpine:edge
-RUN apk --no-cache add dnsmasq
+RUN apk update && \
+    apk upgrade && \
+    apk add --update-cache dnsmasq && \
+    rm -rf /var/cache/apk/*
 EXPOSE 53 53/udp
-ENTRYPOINT ["dnsmasq", "-k"]
+VOLUME /etc/dnsmasq.d/
+ENTRYPOINT ["dnsmasq", "-k", "--log-facility=-"]
+
+#--local-service
